@@ -106,44 +106,29 @@ void Baudios1 (unsigned long baud, unsigned long fosc)                          
 * Rutina necesaria para que funcione correctamente el printf.
 * Escribe un caracter en el puerto serial.
 */
-void EUSART1_Write(uint8_t data) 
+void EUSART1_Write(char data) 
 {
-  while(0 == PIR1bits.TXIF)
-    {
-    }
+  while(0 == PIR1bits.TX1IF);
 
-    TXREG1 = data;                                                              // Write the data byte to the USART.
+  TXREG1 = data;                                                                // Write the data byte to the USART.
 }
 
 void printf1(char* trama)
 {
- while(*trama)  EUSART1_Write(*trama++);    
-
+    while(*trama) EUSART1_Write(*trama++);    
 }
 
 char UART_read1(void)
 {
-    while(!PIR1bits.RCIF)
-    {
-    }
-
-    
-    if(1 == RCSTA1bits.OERR)
-    {
-        // EUSART error - restart
-
-        RCSTA1bits.SPEN = 0; 
-        RCSTA1bits.SPEN = 1; 
-    }
-
-    return RCREG1;
+    if (PIR1bits.RC1IF == 1) return RCREG1;
+    else return 0;
 }
 
 //HABILITA PUERTO SERIE 2
 void Serial_Init2()
 {
     //CONFIGURACION PUERTO SERIE
-    TRISCbits.TRISC2 = 1;                                                       //RX Input
+    TRISAbits.TRISA0 = 1;                                                       //RX Input
     TRISCbits.TRISC1 = 0;                                                       //TX Output
     TXSTA2bits.SYNC2 = 0;                                                       //Transmision asincrona UART
     TXSTA2bits.TX92 = 0;                                                        //8 bits
@@ -172,39 +157,21 @@ void Baudios2 (unsigned long baud, unsigned long fosc)                          
     SPBRG2 = R;                                                                 //Baud rate 9600
 }
 
-void EUSART2_Write(uint8_t data) 
+void EUSART2_Write(char data) 
 {
-    while(0 == PIR3bits.TX2IF)
-    {
-    }
-
+    while(0 == PIR3bits.TX2IF);
     TXREG2 = data;                                                              // Write the data byte to the USART.
 }
 
 void printf2(char* trama)
 {
- while(*trama)  EUSART2_Write(*trama++);    
-
+    while(*trama)  EUSART2_Write(*trama++);    
 }
-
-unsigned char dato_rx;
 
 char UART_read2(void)
 {
-    while(!PIR1bits.RCIF)
-    {
-    }
-
-    
-    if(1 == RCSTAbits.OERR)
-    {
-        // EUSART error - restart
-
-        RCSTAbits.SPEN = 0; 
-        RCSTAbits.SPEN = 1; 
-    }
-    
-    return RCREG;
+    if (PIR3bits.RC2IF == 1) return RCREG2;
+    else return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +334,7 @@ void manda_esp8266_const(const char *info)
     printf1(captu);                                                              //Envia el largo de la trama
     printf1("\r\n");
     __delay_ms(100);                                                            //retardo antes de enviar la trama
-    printf1(info);                                                               //manda envia solo constantes
+    printf1(info);                                                              //manda envia solo constantes
     
 }
 
@@ -379,13 +346,25 @@ void manda_esp8266(char *info)
     printf1(",");
     largo = strlen(info);                                                       //Calcula el largo de la cadena a enviar
     sprintf(captu, "%1u", largo);                                               //Es el largo de la trama +2 por enter y fin de linea
-    printf1(captu);                                                              //Envia el largo de la trama
+    printf1(captu);                                                             //Envia el largo de la trama
     printf1("\r\n");
     __delay_ms(100);                                                            //retardo antes de enviar la trama
-    printf1(info);                                                               //manda envia solo constantes
+    printf1(info);                                                              //manda envia solo constantes
     
 }
 ////////////////////////////////////////////////////////////////////////////////
+
+void manda_variable(char *info)
+{
+    unsigned int largo;
+    largo = strlen(info);                                                       //Calcula el largo de la cadena a enviar
+    sprintf(captu, "%1u", largo);                                               //Es el largo de la trama +2 por enter y fin de linea
+    printf1(captu);                                                             //Envia el largo de la trama
+    printf1("\r\n");
+    __delay_ms(100);                                                            //retardo antes de enviar la trama
+    printf1(info);                                                              //manda envia solo constantes
+    
+}
 
 void main(void) {
     
@@ -395,7 +374,7 @@ void main(void) {
     ////////////////////////////////////////////////////////////////////////////
     PPSCON = 0;
     IOLOCK = 0;
-    RPINR16 = 0b0001101;                                                        //Rx en C2
+    RPINR16 = 0b0001;                                                           //Rx en C2
     RPOR12 = 5;                                                                 //Tx en C1
     PPSCON = 1;
     IOLOCK = 1;
@@ -416,107 +395,105 @@ void main(void) {
     
     printf2("PROBANDO");
     
-    printf1("ATE0\r\n");                                                        //SIN ECO
-    __delay_ms(200);
-
-    printf1("AT+CWMODE=1\r\n");                                                 //se CONECTA A RED EXISTENTE
-    __delay_ms(200);
-
-    //Para Colocar Una Ip Al modulo
-    printf1("AT+CWDHCP=1,0\r\n");                                               //Deshabilita DHCP  para Ip manual
-    __delay_ms(300);
-    //Configura IP IP,Gateway,Mascara   en forma Manual
-
-    printf1("AT+CIPSTA=\"192.168.1.117\",\"192.168.1.254\",\"255.255.255.0\"\r\n");
-    __delay_ms(300);
-
-
-    printf1("AT+CWJAP=\"RED_APTO\",\"2NB112100448\"\r\n");                      //se conecta a una red WIFI
-
-    __delay_ms(3000);
-    __delay_ms(3000);
-    printf1("AT+CIPMUX=1\r\n");                                                 //acepta mulriples conexiones
-    __delay_ms(200);
-
-    printf1("AT+CIFSR\r\n");                                                    //mira que ip tiene el modulo
-    __delay_ms(1000);
-
-    //se conecta a ubidots
-    printf1("AT+CIPMUX=1\r\n");;
-    __delay_ms(300);
-    printf1("AT+CIPSTART=4,\"TCP\",\"things.ubidots.com\",80\r\n");
-    __delay_ms(3000);
-    
+//    printf1("ATE0\r\n");                                                        //SIN ECO
+//    __delay_ms(200);
+//
+//    printf1("AT+CWMODE=1\r\n");                                                 //se CONECTA A RED EXISTENTE
+//    __delay_ms(200);
+//
+//    //Para Colocar Una Ip Al modulo
+//    printf1("AT+CWDHCP=1,0\r\n");                                               //Deshabilita DHCP  para Ip manual
+//    __delay_ms(300);
+//    //Configura IP IP,Gateway,Mascara   en forma Manual
+//
+//    printf1("AT+CIPSTA=\"192.168.1.117\",\"192.168.1.254\",\"255.255.255.0\"\r\n");
+//    __delay_ms(300);
+//
+//
+//    printf1("AT+CWJAP=\"RED_APTO\",\"2NB112100448\"\r\n");                      //se conecta a una red WIFI
+//
+//    __delay_ms(3000);
+//    __delay_ms(3000);
+//    printf1("AT+CIPMUX=1\r\n");                                                 //acepta mulriples conexiones
+//    __delay_ms(200);
+//
+//    printf1("AT+CIFSR\r\n");                                                    //mira que ip tiene el modulo
+//    __delay_ms(1000);
+//
+//    //se conecta a ubidots
+//    printf1("AT+CIPMUX=1\r\n");;
+//    __delay_ms(300);
+//    printf1("AT+CIPSTART=4,\"TCP\",\"things.ubidots.com\",80\r\n");
+//    __delay_ms(3000);
+       
     while(1)
     {
-        
-//        dato_rx = UART_read1();
-//        if (dato_rx == "AT+CWQAP") printf1(dato_rx);
+        if (PIR3bits.RC2IF) printf2(RCREG2);
         //LIMPIA LAS TRAMAS
-        memset(trama_largo,20,0);
-        memset(trama,150,0);
-        
-        //ARMAMOS TRAMA DE VARIABLES
-        sprintf(trama,"{\"corriente\": %5.2f,\"inputdigital0\": %c,\"inputdigital1\": %c,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,d0_string,d1_string,A1,A2);
-        
-        var_largo = strlen(trama)-1;                                            //Calcula el largo de la trama de variables
-        
-        sprintf(trama_largo,"%u\n\n",var_largo);                                //La pasa a cadena y le agrega dos fin de lineas
-        
-        ////////////////////////////////////////////////////////////////////////
-        ////////////////////// ENVIOS DE DATOS A UBIDOTS ///////////////////////
-        // El device en este caso es idem_v1-5                                //
-        // y el token BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G                     //
-        // se debe colocar los de la inteface                                 //
-        ////////////////////////////////////////////////////////////////////////
-        
-        //MANDA EL LARGO DE LA TRAMA
-        manda_esp8266_const("POST /api/v1.6/devices/idem_v1-5/?token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\nContent-Type: application/json\nContent-Length: ");
-        __delay_ms(700);       
-        
-        manda_esp8266(trama_largo);                                             //Manda el largo de la trama
-        __delay_ms(500);
-        
-        manda_esp8266(trama);                                                   //Manda la info con las variables
-        __delay_ms(500);
-        
-        //PREGUNTA POR VARIABLES DESEADAS (R1)
-        manda_esp8266_const("GET /api/v1.6/devices/idem_v1-5/r1-ac/values?page_size=1&token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\n\n");
-        
-        lee_trama();                                                            //Lee la respuesta
-        
-        //Captura el valor de la variables        value": 0.0}
-        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el :
-        strcpy(captu, strtok(0, ","));                                          //Captura hasta la coma ,
-        
-        //Pasa la cadena a  numero
-        valor_rx = atof(captu);
-        if (valor_rx == 1.0) RELE1 = 1; else RELE1 = 0;                         //Aplica la salida al led
-        __delay_ms(200);
-        
-        
-        //PREGUNTA POR VARIABLES DESEADAS (R2)
-        manda_esp8266_const("GET /api/v1.6/devices/idem_v1-5/r2-ac/values?page_size=1&token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\n\n");
-        
-        lee_trama();                                                            //Lee la respuesta
-        
-        //Captura el valor de la variables        value": 0.0}
-        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el =
-        strcpy(captu, strtok(0, ","));                                          //Captura hasta el /
-        
-        //Pasa la cadena a  numero
-        valor_rx = atof(captu);
-        if (valor_rx == 1.0) RELE2 = 1; else RELE2 = 0;                         //Aplica la salida al led
-        __delay_ms(200);
-        
-        reconect++;
-        if (reconect >= 7)
-        {
-            reconect = 0;
-            //se conecta a ubidots
-            printf1("AT+CIPSTART=4,\"TCP\",\"things.ubidots.com\",80\r\n");
-            __delay_ms(300); 
-        }
+//        memset(trama_largo,20,0);
+//        memset(trama,150,0);
+//        
+//        //ARMAMOS TRAMA DE VARIABLES
+//        sprintf(trama,"{\"corriente\": %5.2f,\"inputdigital0\": %c,\"inputdigital1\": %c,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,d0_string,d1_string,A1,A2);
+//        
+//        var_largo = strlen(trama)-1;                                            //Calcula el largo de la trama de variables
+//        
+//        sprintf(trama_largo,"%u\n\n",var_largo);                                //La pasa a cadena y le agrega dos fin de lineas
+//        
+//        ////////////////////////////////////////////////////////////////////////
+//        ////////////////////// ENVIOS DE DATOS A UBIDOTS ///////////////////////
+//        // El device en este caso es idem_v1-5                                //
+//        // y el token BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G                     //
+//        // se debe colocar los de la inteface                                 //
+//        ////////////////////////////////////////////////////////////////////////
+//        
+//        //MANDA EL LARGO DE LA TRAMA
+//        manda_esp8266_const("POST /api/v1.6/devices/idem_v1-5/?token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\nContent-Type: application/json\nContent-Length: ");
+//        __delay_ms(700);       
+//        
+//        manda_esp8266(trama_largo);                                             //Manda el largo de la trama
+//        __delay_ms(500);
+//        
+//        manda_esp8266(trama);                                                   //Manda la info con las variables
+//        __delay_ms(500);
+//        
+//        //PREGUNTA POR VARIABLES DESEADAS (R1)
+//        manda_esp8266_const("GET /api/v1.6/devices/idem_v1-5/r1-ac/values?page_size=1&token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\n\n");
+//        
+//        lee_trama();                                                            //Lee la respuesta
+//        
+//        //Captura el valor de la variables        value": 0.0}
+//        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el :
+//        strcpy(captu, strtok(0, ","));                                          //Captura hasta la coma ,
+//        
+//        //Pasa la cadena a  numero
+//        valor_rx = atof(captu);
+//        if (valor_rx == 1.0) RELE1 = 1; else RELE1 = 0;                         //Aplica la salida al led
+//        __delay_ms(200);
+//        
+//        
+//        //PREGUNTA POR VARIABLES DESEADAS (R2)
+//        manda_esp8266_const("GET /api/v1.6/devices/idem_v1-5/r2-ac/values?page_size=1&token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\n\n");
+//        
+//        lee_trama();                                                            //Lee la respuesta
+//        
+//        //Captura el valor de la variables        value": 0.0}
+//        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el =
+//        strcpy(captu, strtok(0, ","));                                          //Captura hasta el /
+//        
+//        //Pasa la cadena a  numero
+//        valor_rx = atof(captu);
+//        if (valor_rx == 1.0) RELE2 = 1; else RELE2 = 0;                         //Aplica la salida al led
+//        __delay_ms(200);
+//        
+//        reconect++;
+//        if (reconect >= 7)
+//        {
+//            reconect = 0;
+//            //se conecta a ubidots
+//            printf1("AT+CIPSTART=4,\"TCP\",\"things.ubidots.com\",80\r\n");
+//            __delay_ms(300); 
+//        }
     }
     return;
 }
