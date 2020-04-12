@@ -511,8 +511,6 @@ void main(void) {
         {
             reconect = 0;
             //se conecta a ubidots
-            printf1("AT+CIPMUX=1\r\n");;
-            __delay_ms(300);
             printf1("AT+CIPSTART=4,\"TCP\",\"things.ubidots.com\",80\r\n");
             __delay_ms(300); 
         }
