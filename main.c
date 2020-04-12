@@ -191,20 +191,20 @@ unsigned char dato_rx;
 
 char UART_read2(void)
 {
-    while(!PIR3bits.RC2IF)
+    while(!PIR1bits.RCIF)
     {
     }
 
     
-    if(1 == RCSTA2bits.OERR2)
+    if(1 == RCSTAbits.OERR)
     {
         // EUSART error - restart
 
-        RCSTA2bits.SPEN2 = 0; 
-        RCSTA2bits.SPEN2 = 1; 
+        RCSTAbits.SPEN = 0; 
+        RCSTAbits.SPEN = 1; 
     }
-
-    return RCREG2;
+    
+    return RCREG;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -449,6 +449,9 @@ void main(void) {
     
     while(1)
     {
+        
+//        dato_rx = UART_read1();
+//        if (dato_rx == "AT+CWQAP") printf1(dato_rx);
         //LIMPIA LAS TRAMAS
         memset(trama_largo,20,0);
         memset(trama,150,0);
@@ -469,7 +472,7 @@ void main(void) {
         
         //MANDA EL LARGO DE LA TRAMA
         manda_esp8266_const("POST /api/v1.6/devices/idem_v1-5/?token=BBFF-cdocy3PYE8Iu2wocqEY6pMuZAiAN6G HTTP/1.1\nHost: things.ubidots.com\nContent-Type: application/json\nContent-Length: ");
-        __delay_ms(1000);       
+        __delay_ms(700);       
         
         manda_esp8266(trama_largo);                                             //Manda el largo de la trama
         __delay_ms(500);
@@ -483,8 +486,8 @@ void main(void) {
         lee_trama();                                                            //Lee la respuesta
         
         //Captura el valor de la variables        value": 0.0}
-        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el =
-        strcpy(captu, strtok(0, ","));                                          //Captura hasta el /
+        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el :
+        strcpy(captu, strtok(0, ","));                                          //Captura hasta la coma ,
         
         //Pasa la cadena a  numero
         valor_rx = atof(captu);
@@ -507,7 +510,7 @@ void main(void) {
         __delay_ms(200);
         
         reconect++;
-        if (reconect >= 5)
+        if (reconect >= 7)
         {
             reconect = 0;
             //se conecta a ubidots
