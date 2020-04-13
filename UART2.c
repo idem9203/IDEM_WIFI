@@ -14,10 +14,17 @@ void UART2_Init(unsigned long BAUD)
     //CONFIGURACION PUERTO SERIE
     TRISAbits.TRISA0 = 1;                                                       //RX Input
     TRISCbits.TRISC1 = 0;                                                       //TX Output
+    
+    //Configuracion
     TXSTA2bits.SYNC2 = 0;                                                       //Transmision asincrona UART
-    TXSTA2bits.TX92 = 0;                                                        //8 bits
     RCSTA2bits.SPEN2 = 1;                                                       //Habilita UART
+    
+    //Transmision
+    TXSTA2bits.TX92 = 0;                                                        //8 bits
     TXSTA2bits.TXEN2 = 1;                                                       //Habilitar transmision
+    
+    //Recepcion
+    RCSTA2bits.RC92 = 0;                                                        //8 bits
     RCSTA2bits.CREN2 = 1;                                                       //Habilita recepcion
     
     //CONFIGURACION BAUDIOS

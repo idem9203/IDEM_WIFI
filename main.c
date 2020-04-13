@@ -33,7 +33,12 @@ void main(void) {
        
     while(1)
     {
-        UART2_printf("PROBANDO");
+//        text = UART2_Read();
+//        UART2_printf(text);
+        if (PIR1bits.TX1IF == 1) UART1_printf(RCREG1);
+        
+        UART1_printf("Esperando...\r\n");
+        __delay_ms(500);
         //LIMPIA LAS TRAMAS
 //        memset(trama_largo,20,0);
 //        memset(trama,150,0);

@@ -14,11 +14,18 @@ void UART1_Init(unsigned long BAUD)
     //CONFIGURACION PUERTO SERIE
     TRISCbits.TRISC7 = 1;                                                       //RX Input
     TRISCbits.TRISC6 = 0;                                                       //TX Output
-    TXSTA1bits.SYNC = 0;                                                        //Transmision asincrona UART
-    TXSTA1bits.TX9 = 0;                                                         //8 bits
-    RCSTA1bits.SPEN = 1;                                                        //Habilita UART
-    TXSTA1bits.TXEN = 1;                                                        //Habilitar transmision
-    RCSTA1bits.CREN = 1;                                                        //Habilita recepcion
+    
+    //Configuracion
+    TXSTA1bits.SYNC1 = 0;                                                       //Transmision asincrona UART
+    RCSTA1bits.SPEN1 = 1;                                                       //Habilita UART
+    
+    //Transmision
+    TXSTA1bits.TX91 = 0;                                                        //8 bits
+    TXSTA1bits.TXEN1 = 1;                                                       //Habilitar transmision
+    
+    //Recepcion
+    RCSTA1bits.RC9 = 0;                                                         //8 bits
+    RCSTA1bits.CREN1 = 1;                                                       //Habilita recepcion
 
     //CONFIGURACION BAUDIOS
     if (BAUD == 115200) 
@@ -45,7 +52,7 @@ void UART1_Write(char data)
 { 
     while(0 == PIR1bits.TX1IF);
 
-    TXREG1 = data;                                                                // Write the data byte to the USART.
+    TXREG1 = data;                                                              // Write the data byte to the USART.
 }
 
 void UART1_printf(char* trama)
