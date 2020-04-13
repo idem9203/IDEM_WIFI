@@ -21,21 +21,21 @@ void main(void) {
     
     //HABILITAR COMUNICACION SERIAL
     UART1_Init(115200);
-    UART2_Init(115200);
+//    UART2_Init(115200);
     
     __delay_ms(200);
     
-    UART2_printf("PROBANDO");
+//    UART2_printf("PROBANDO");
     
-    ESP8266_CONFIG_CONNECT("RED_APTO","2NB112100448");                          //Los parametros son SSID y Password, siempre entre comillas
+//    ESP8266_CONFIG_CONNECT("RED_APTO","2NB112100448");                          //Los parametros son SSID y Password, siempre entre comillas
     
     //DAMOS UN TIEMPO PARA QUE INCIE EL BUCLE DE OPERACION
-       
+    
     while(1)
     {
 //        text = UART2_Read();
 //        UART2_printf(text);
-        if (PIR1bits.TX1IF == 1) UART1_printf(RCREG1);
+        UART1_printf(UART1_Read());
         
         UART1_printf("Esperando...\r\n");
         __delay_ms(500);

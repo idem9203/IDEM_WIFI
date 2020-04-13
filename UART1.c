@@ -17,7 +17,7 @@ void UART1_Init(unsigned long BAUD)
     
     //Configuracion
     TXSTA1bits.SYNC1 = 0;                                                       //Transmision asincrona UART
-    RCSTA1bits.SPEN1 = 1;                                                       //Habilita UART
+    RCSTA1bits.SPEN1 = 1;                                                        //Habilita UART
     
     //Transmision
     TXSTA1bits.TX91 = 0;                                                        //8 bits
@@ -61,7 +61,7 @@ void UART1_printf(char* trama)
 }
 
 char UART1_Read(void)
-{
+{                                                        
     if (PIR1bits.RC1IF == 1) return RCREG1;
     else return 0;
 }
