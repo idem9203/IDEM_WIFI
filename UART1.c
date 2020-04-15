@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <xc.h> // include processor files - each processor file is guarded.
-#include <pic18f25j50.h>
-#include "Config.h"
 #include "UART1.h"
 
 
@@ -64,4 +57,9 @@ char UART1_Read(void)
 {                                                        
     if (PIR1bits.RC1IF == 1) return RCREG1;
     else return 0;
+}
+
+bool UART1_Rx_Ready(void)
+{
+    return (bool)(PIR1bits.RC1IF);
 }

@@ -14,6 +14,7 @@
 
 float iA1;
 float A1, A2;
+char texto_rx;
 
 void main(void) {
     
@@ -35,9 +36,12 @@ void main(void) {
     {
 //        text = UART2_Read();
 //        UART2_printf(text);
-        UART1_printf(UART1_Read());
+        texto_rx = UART1_Read();
         
         UART1_printf("Esperando...\r\n");
+        
+        UART1_printf(texto_rx);
+        
         __delay_ms(500);
         //LIMPIA LAS TRAMAS
 //        memset(trama_largo,20,0);

@@ -60,3 +60,8 @@ char UART2_Read(void)
     if (PIR3bits.RC2IF == 1) return RCREG2;
     else return 0;
 }
+
+bool UART2_Rx_Ready(void)
+{
+    return (bool)(PIR3bits.RC2IF);
+}

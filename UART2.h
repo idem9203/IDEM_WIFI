@@ -10,6 +10,13 @@
 #ifndef UART2_H
 #define	UART2_H
 
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <pic18f25j50.h>
+#include "Config.h"
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 void UART2_Init(unsigned long BAUD);
@@ -17,6 +24,7 @@ int B2 = 0;
 void UART2_Write(char data);
 void UART2_printf(char* trama);
 char UART2_Read();
+bool UART2_Rx_Ready(void);
 
 #ifdef	__cplusplus
 extern "C" {

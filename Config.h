@@ -61,6 +61,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <xc.h> // include processor files - each processor file is guarded.
 
