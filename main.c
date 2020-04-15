@@ -14,7 +14,12 @@
 
 float iA1;
 float A1, A2;
-char texto_rx;
+
+//VARIABLES PARA CAPTURAR LA TRAMA
+char trama_rx2[30];
+char procesa[30];
+
+char dato_rx2;
 
 void main(void) {
     
@@ -34,13 +39,18 @@ void main(void) {
     
     while(1)
     {
-//        text = UART2_Read();
-//        UART2_printf(text);
-        texto_rx = UART1_Read();
+        
+        lee_trama();
+        
+        strcpy(captu, strtok(trama_rx, ":"));                                   //Inicia captura de tokens desde el =
+        strcpy(captu, strtok(0, ","));                                          //Captura hasta el /
+        
+        //Pasa la cadena a  numero
+        valor_rx = atof(captu);
+        
+        UART1_printf(captu);
         
         UART1_printf("Esperando...\r\n");
-        
-        UART1_printf(texto_rx);
         
         __delay_ms(500);
         //LIMPIA LAS TRAMAS
