@@ -14,8 +14,8 @@ void Remap_PIN ()
     PPSCON = 85;
     PPSCON = 170;
     IOLOCK = 0;
-    RPINR16 = 0b0001;                                                               //Rx en C2
-    RPOR12 = 5;                                                                     //Tx en C1
+    RPINR16 = 0b0000;                                                           //Rx en A0
+    RPOR12 = 5;                                                                 //Tx en C1
     PPSCON = 85;
     PPSCON = 170;
     IOLOCK = 1;

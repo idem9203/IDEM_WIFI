@@ -11,6 +11,7 @@
 #include "ESP8266_SP01_UBIDOTS.h"
 #include "Remapeo_Pines.h"
 #include "CONFIG_CONNECT_ESP8266_SP01.h"
+#include "Lee_trama_uC.h"
 
 float iA1;
 float A1, A2;
@@ -22,7 +23,7 @@ void main(void) {
     
     //HABILITAR COMUNICACION SERIAL
     UART1_Init(115200);
-//    UART2_Init(115200);
+    UART2_Init(115200);
     
     __delay_ms(200);
     
@@ -46,6 +47,7 @@ void main(void) {
         UART1_printf(captu_server);
         
         UART1_printf("Esperando...\r\n");
+        UART2_printf("Probando UART2\r\n");
         
         __delay_ms(500);
         //LIMPIA LAS TRAMAS

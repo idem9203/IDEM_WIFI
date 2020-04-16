@@ -48,12 +48,11 @@ char Lee_Trama_Server();                                                        
 /////////////////// VARIABLES PARA TRABAJAR CON ESP8266 ////////////////////////
 ///////////////////       VISUALIZACION DE DATOS        ////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-char trama_server[150];                                                                //Enviar informacion al ESP8266
-char trama_largo_server[20];                                                           //Para calcular el largo de la trama de las variables a enviar
-char captu_server[30];                                                                 //Para capturar informacion de la trama
+char trama_server[150];                                                         //Enviar informacion al ESP8266
+char trama_largo_server[20];                                                    //Para calcular el largo de la trama de las variables a enviar
+char captu_server[30];                                                          //Para capturar informacion de la trama
 
-int var_largo_server;                                                                  //Largo de la trama en entero
-char d0_string, d1_string;
+int var_largo_server;                                                           //Largo de la trama en entero
 
 unsigned long strlen_const(const char *const_pun);
 void manda_esp8266_const(const char *info);
