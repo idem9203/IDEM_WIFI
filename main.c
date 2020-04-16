@@ -17,6 +17,16 @@ float iA1;
 float A1, A2;
 int digitalInput_0, digital_Input_1, rele_1, rele_2;
 
+char mensaje[10];
+char *token;
+char dig0[10];
+char gid1[10];
+char ana1[10];
+char nal2[10];
+char tcm1[10];
+char rel1[10];
+char ler2[10];
+
 void main(void) {
     
     Remap_PIN();
@@ -38,13 +48,49 @@ void main(void) {
         
         Lee_Trama_Server();
         
-        strcpy(captu_server, strtok(trama_rx_server, ":"));                     //Inicia captura de tokens desde el :
-        strcpy(captu_server, strtok(0, ","));                                   //Captura hasta la coma ,
+        token = strtok(trama_rx_server, "/");
+        strcpy(mensaje, token);
+        UART1_printf(mensaje);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(dig0, token);
+        UART1_printf(dig0);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(gid1, token);
+        UART1_printf(gid1);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(ana1, token);
+        UART1_printf(ana1);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(nal2, token);
+        UART1_printf(nal2);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(tcm1, token);
+        UART1_printf(tcm1);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(rel1, token);
+        UART1_printf(rel1);
+        UART1_printf("\r\n");
+        
+        token = strtok(NULL, "/");
+        strcpy(ler2, token);
+        UART1_printf(ler2);
+        UART1_printf("\r\n");
+        
         
         //Pasa la cadena a  numero
-        valor_rx_server = atof(captu_server);
-        
-        UART1_printf(captu_server);
+//        valor_rx_server = atof(captu_server);
         
         UART1_printf("Esperando...\r\n");
         UART2_printf("Probando UART2\r\n");
