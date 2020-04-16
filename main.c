@@ -15,7 +15,7 @@
 
 float iA1;
 float A1, A2;
-int digitalInput_1, digital_Input_2, rele_1, rele_2;
+int digitalInput_0, digital_Input_1, rele_1, rele_2;
 
 void main(void) {
     
@@ -55,7 +55,7 @@ void main(void) {
 //        memset(trama_server,150,0);
 //        
 //        //ARMAMOS TRAMA DE VARIABLES
-//        sprintf(trama_server,"{\"corriente\": %5.2f,\"inputdigital0\": %c,\"inputdigital1\": %c,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,d0_string,d1_string,A1,A2);
+//        sprintf(trama_server,"{\"corriente\": %5.2f,\"inputdigital0\": %c,\"inputdigital1\": %c,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,digitalInput_0,digital_Input_1,A1,A2);
 //        
 //        var_largo_server = strlen(trama_server)-1;                              //Calcula el largo de la trama de variables
 //        
