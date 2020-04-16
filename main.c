@@ -15,7 +15,7 @@
 
 float iA1;
 float A1, A2;
-int digitalInput_0, digital_Input_1, rele_1, rele_2;
+int digital_Input_0, digital_Input_1, rele_1, rele_2;
 
 char mensaje[10];
 char *token;
@@ -54,37 +54,44 @@ void main(void) {
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(dig0, token);
+        digital_Input_0 = atoi (token);
+        sprintf(dig0, "%i", digital_Input_0);
         UART1_printf(dig0);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(gid1, token);
+        digital_Input_1 = atoi (token);
+        sprintf(gid1, "%i", digital_Input_1);
         UART1_printf(gid1);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(ana1, token);
+        A1 = atof (token);
+        sprintf(ana1, "%5.2f", A1);
         UART1_printf(ana1);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(nal2, token);
+        A2 = atof (token);
+        sprintf(nal2, "%5.2f", A2);
         UART1_printf(nal2);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(tcm1, token);
+        iA1 = atof (token);
+        sprintf(tcm1, "%5.2f", iA1);
         UART1_printf(tcm1);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(rel1, token);
+        rele_1 = atoi (token);
+        sprintf(rel1, "%i", rele_1);
         UART1_printf(rel1);
         UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
-        strcpy(ler2, token);
+        rele_2 = atoi (token);
+        sprintf(ler2, "%i", rele_2);
         UART1_printf(ler2);
         UART1_printf("\r\n");
         
@@ -101,7 +108,7 @@ void main(void) {
 //        memset(trama_server,150,0);
 //        
 //        //ARMAMOS TRAMA DE VARIABLES
-//        sprintf(trama_server,"{\"corriente\": %5.2f,\"inputdigital0\": %c,\"inputdigital1\": %c,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,digitalInput_0,digital_Input_1,A1,A2);
+//        sprintf(trama_server,"{\"corriente\": %5.2f,\"inputdigital0\": %i,\"inputdigital1\": %i,\"analog1\": %5.2f,\"analog2\": %5.2f}\n",iA1,digital_Input_0,digital_Input_1,A1,A2);
 //        
 //        var_largo_server = strlen(trama_server)-1;                              //Calcula el largo de la trama de variables
 //        
