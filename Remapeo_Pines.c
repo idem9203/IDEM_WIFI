@@ -11,14 +11,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 void Remap_PIN ()
 {
-    PPSCON = 85;
-    PPSCON = 170;
-    IOLOCK = 0;
-    RPINR16 = 0b0000;                                                           //Rx en A0
-    RPOR12 = 5;                                                                 //Tx en C1
-    PPSCON = 85;
-    PPSCON = 170;
-    IOLOCK = 1;
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    PPSCON = 0;
+    
+    RPINR16 = 13;                                                               //Rx en C2 RP13
+    RPOR12 = 0x05;                                                              //Tx en C1 RP12
+    
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    PPSCON = 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

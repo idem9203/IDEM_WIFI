@@ -5,7 +5,7 @@
 void UART2_Init(unsigned long BAUD)
 {
     //CONFIGURACION PUERTO SERIE
-    TRISAbits.TRISA0 = 1;                                                       //RX Input
+    TRISCbits.TRISC2 = 1;                                                       //RX Input
     TRISCbits.TRISC1 = 0;                                                       //TX Output
     
     //Configuracion
