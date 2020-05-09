@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <pic18f25j50.h>
+#include <pic18f26j50.h>
 #include "Config.h"
 #include <xc.h> // include processor files - each processor file is guarded.  
 

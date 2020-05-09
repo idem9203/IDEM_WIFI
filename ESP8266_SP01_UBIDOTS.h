@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pic18f25j50.h>
+#include <pic18f26j50.h>
 #include "Config.h"
 #include "UART1.h"
 #include "UART2.h"

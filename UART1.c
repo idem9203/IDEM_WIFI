@@ -4,22 +4,6 @@
 //HABILITA PUERTO SERIE 1
 void UART1_Init(unsigned long BAUD)
 {
-    //CONFIGURACION PUERTO SERIE
-    TRISCbits.TRISC7 = 1;                                                       //RX Input
-    TRISCbits.TRISC6 = 0;                                                       //TX Output
-    
-    //Configuracion
-    TXSTA1bits.SYNC1 = 0;                                                       //Transmision asincrona UART
-    RCSTA1bits.SPEN1 = 1;                                                        //Habilita UART
-    
-    //Transmision
-    TXSTA1bits.TX91 = 0;                                                        //8 bits
-    TXSTA1bits.TXEN1 = 1;                                                       //Habilitar transmision
-    
-    //Recepcion
-    RCSTA1bits.RC9 = 0;                                                         //8 bits
-    RCSTA1bits.CREN1 = 1;                                                       //Habilita recepcion
-
     //CONFIGURACION BAUDIOS
     if (BAUD == 115200) 
     {
@@ -34,6 +18,22 @@ void UART1_Init(unsigned long BAUD)
     //CONFIGURACION BAUD RATE
     BAUDCON1bits.BRG16 = 0;                                                     //8 bits
     SPBRG1 = B1;                                                                //Baud rate 9600
+    
+    //CONFIGURACION PUERTO SERIE
+    TRISCbits.TRISC7 = 1;                                                       //RX Input
+    TRISCbits.TRISC6 = 0;                                                       //TX Output
+    
+    //Configuracion
+    TXSTA1bits.SYNC1 = 0;                                                       //Transmision asincrona UART
+    RCSTA1bits.SPEN1 = 1;                                                        //Habilita UART
+    
+    //Transmision
+    TXSTA1bits.TX91 = 0;                                                        //8 bits
+    TXSTA1bits.TXEN1 = 1;                                                       //Habilitar transmision
+    
+    //Recepcion
+    RCSTA1bits.RX9 = 0;                                                         //8 bits
+    RCSTA1bits.CREN1 = 1;                                                       //Habilita recepcion
 }
 ////////////////////////////////////////////////////////////////////////////////
 

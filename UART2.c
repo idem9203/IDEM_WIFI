@@ -1,25 +1,9 @@
 #include "UART2.h"
-
+#include <pic18f26j50.h>
 
 //HABILITA PUERTO SERIE 2
 void UART2_Init(unsigned long BAUD)
 {
-    //CONFIGURACION PUERTO SERIE
-    TRISCbits.TRISC2 = 1;                                                       //RX Input
-    TRISCbits.TRISC1 = 0;                                                       //TX Output
-    
-    //Configuracion
-    TXSTA2bits.SYNC2 = 0;                                                       //Transmision asincrona UART
-    RCSTA2bits.SPEN2 = 1;                                                       //Habilita UART
-    
-    //Transmision
-    TXSTA2bits.TX92 = 0;                                                        //8 bits
-    TXSTA2bits.TXEN2 = 1;                                                       //Habilitar transmision
-    
-    //Recepcion
-    RCSTA2bits.RC92 = 0;                                                        //8 bits
-    RCSTA2bits.CREN2 = 1;                                                       //Habilita recepcion
-    
     //CONFIGURACION BAUDIOS
     if (BAUD == 115200) 
     {
@@ -34,6 +18,24 @@ void UART2_Init(unsigned long BAUD)
     //CONFIGURACION BAUD RATE
     BAUDCON2bits.BRG162 = 0;                                                    //8 bits
     SPBRG2 = B2;                                                                //Baud rate 9600
+    
+    //CONFIGURACION PUERTO SERIE
+    TRISCbits.TRISC2 = 1;                                                       //RX Input
+    TRISCbits.TRISC1 = 0;                                                       //TX Output
+    
+    //Configuracion
+    TXSTA2bits.SYNC2 = 0;                                                       //Transmision asincrona UART
+    RCSTA2bits.SPEN2 = 1;                                                       //Habilita UART
+    
+     //Recepcion
+    RCSTA2bits.CREN2 = 1;                                                       //Habilita recepcion
+    RCSTA2bits.RX92 = 0;                                                        //8 bits
+    
+      
+    //Transmision
+    TXSTA2bits.TX92 = 0;                                                        //8 bits
+    TXSTA2bits.TXEN2 = 1;                                                       //Habilitar transmision
+       
 }
 ////////////////////////////////////////////////////////////////////////////////
 

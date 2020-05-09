@@ -32,12 +32,10 @@ void main(void) {
     Remap_PIN();
     
     //HABILITAR COMUNICACION SERIAL
-    UART1_Init(115200);
-    UART2_Init(115200);
+//    UART1_Init(9600);
+    UART2_Init(9600);
     
     __delay_ms(200);
-    
-//    UART2_printf("PROBANDO");
     
 //    ESP8266_CONFIG_CONNECT("RED_APTO","2NB112100448");                          //Los parametros son SSID y Password, siempre entre comillas
     
@@ -46,60 +44,111 @@ void main(void) {
     while(1)
     {
         
-        Lee_Trama_Server();
+//        Lee_Trama_Server();
+//        
+//        token = strtok(trama_rx_server, "/");
+//        strcpy(mensaje, token);
+//        
+//        token = strtok(NULL, "/");
+//        digital_Input_0 = atoi (token);
+//        sprintf(dig0, "%i", digital_Input_0);
+//        
+//        token = strtok(NULL, "/");
+//        digital_Input_1 = atoi (token);
+//        sprintf(gid1, "%i", digital_Input_1);
+//        
+//        token = strtok(NULL, "/");
+//        A1 = atof (token);
+//        sprintf(ana1, "%5.2f", A1);
+//        
+//        token = strtok(NULL, "/");
+//        A2 = atof (token);
+//        sprintf(nal2, "%5.2f", A2);
+//        
+//        token = strtok(NULL, "/");
+//        iA1 = atof (token);
+//        sprintf(tcm1, "%5.2f", iA1);
+//        
+//        token = strtok(NULL, "/");
+//        rele_1 = atoi (token);
+//        sprintf(rel1, "%i", rele_1);
+//        
+//        token = strtok(NULL, "/");
+//        rele_2 = atoi (token);
+//        sprintf(ler2, "%i", rele_2);
+//        
+//        UART1_printf(mensaje);
+//        UART1_printf("/");
+//        UART1_printf(dig0);
+//        UART1_printf("/");
+//        UART1_printf(gid1);
+//        UART1_printf("/");
+//        UART1_printf(ana1);
+//        UART1_printf("/");
+//        UART1_printf(nal2);
+//        UART1_printf("/");
+//        UART1_printf(tcm1);
+//        UART1_printf("/");
+//        UART1_printf(rel1);
+//        UART1_printf("/");
+//        UART1_printf(ler2);
+//        UART1_printf("\r\n");
         
-        token = strtok(trama_rx_server, "/");
+        Lee_Trama_uC();
+        
+        token = strtok(trama_rx_uC, "/");
         strcpy(mensaje, token);
-        UART1_printf(mensaje);
-        UART1_printf("\r\n");
         
         token = strtok(NULL, "/");
         digital_Input_0 = atoi (token);
         sprintf(dig0, "%i", digital_Input_0);
-        UART1_printf(dig0);
-        UART1_printf("\r\n");
-        
+              
         token = strtok(NULL, "/");
         digital_Input_1 = atoi (token);
         sprintf(gid1, "%i", digital_Input_1);
-        UART1_printf(gid1);
-        UART1_printf("\r\n");
-        
+               
         token = strtok(NULL, "/");
         A1 = atof (token);
         sprintf(ana1, "%5.2f", A1);
-        UART1_printf(ana1);
-        UART1_printf("\r\n");
-        
+               
         token = strtok(NULL, "/");
         A2 = atof (token);
         sprintf(nal2, "%5.2f", A2);
-        UART1_printf(nal2);
-        UART1_printf("\r\n");
-        
+               
         token = strtok(NULL, "/");
         iA1 = atof (token);
         sprintf(tcm1, "%5.2f", iA1);
-        UART1_printf(tcm1);
-        UART1_printf("\r\n");
-        
+               
         token = strtok(NULL, "/");
         rele_1 = atoi (token);
         sprintf(rel1, "%i", rele_1);
-        UART1_printf(rel1);
-        UART1_printf("\r\n");
-        
+               
         token = strtok(NULL, "/");
         rele_2 = atoi (token);
         sprintf(ler2, "%i", rele_2);
-        UART1_printf(ler2);
-        UART1_printf("\r\n");
-        
+               
+        UART2_printf(mensaje);
+        UART2_printf("/");
+        UART2_printf(dig0);
+        UART2_printf("/");
+        UART2_printf(gid1);
+        UART2_printf("/");
+        UART2_printf(ana1);
+        UART2_printf("/");
+        UART2_printf(nal2);
+        UART2_printf("/");
+        UART2_printf(tcm1);
+        UART2_printf("/");
+        UART2_printf(rel1);
+        UART2_printf("/");
+        UART2_printf(ler2);
+        UART2_printf("/");
+        UART2_printf("\r\n");
         
         //Pasa la cadena a  numero
 //        valor_rx_server = atof(captu_server);
         
-        UART1_printf("Esperando...\r\n");
+//        UART1_printf("Esperando...\r\n");
         UART2_printf("Probando UART2\r\n");
         
         __delay_ms(500);

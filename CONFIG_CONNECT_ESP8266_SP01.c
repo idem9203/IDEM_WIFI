@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <xc.h> // include processor files - each processor file is guarded.
-#include <pic18f25j50.h>
+#include <pic18f26j50.h>
 #include "Config.h"
 #include "CONFIG_CONNECT_ESP8266_SP01.h"
 #include "UART1.h"

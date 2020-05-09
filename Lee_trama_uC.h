@@ -28,11 +28,18 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef LEE_TRAMA_uC_H
-#define	LEE_TRAMA_uC_H
+#ifndef LEE_TRAMA_UC_H
+#define	LEE_TRAMA_UC_H
 
-#include "UART2.h"
-#include <xc.h> // include processor files - each processor file is guarded.  
+#include <xc.h> // include processor files - each processor file is guarded.
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pic18f26j50.h>
+#include "Config.h"
+#include "UART1.h"
+#include "UART2.h"  
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////// VARIABLES PARA TRABAJAR CON ESP8266 ////////////////////////
@@ -46,30 +53,13 @@ enum estados_uC {cap_l_uC, cap_u_uC, cap_e_uC, cap_co_uC, esp_final_uC};
 char estado_rec_uC = cap_l_uC;
 
 //Lo que se va a capturar se toma desde lue=   value": 0.0}
-float valor_rx_uC;                                                          //Captura valor de lavariables
+float valor_rx_uC;                                                              //Captura valor de lavariables
 char trama_rx_uC[50];
 char contador_trama_uC = 0;
-unsigned long demora_uC = 0;                                                //Usado para alir de la lectura de datos
+unsigned long demora_uC = 0;                                                    //Usado para alir de la lectura de datos
 
 
-char Lee_Trama_uC();                                                        //Funcio que retorna 1 si hay dato sino 0
-
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-/////////////////// VARIABLES PARA TRABAJAR CON ESP8266 ////////////////////////
-///////////////////       VISUALIZACION DE DATOS        ////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-char trama_uC[150];                                                                //Enviar informacion al ESP8266
-char trama_largo_uC[20];                                                           //Para calcular el largo de la trama de las variables a enviar
-char captu_uC[30];                                                                 //Para capturar informacion de la trama
-
-int var_largo_uC;                                                                  //Largo de la trama en entero
-
-unsigned long strlen_const_uC(const char *const_pun);
-void manda_uC_const(const char *info_uC);
-void manda_uC(char *info_uC);
-
+char Lee_Trama_uC();                                                            //Funcio que retorna 1 si hay dato sino 0
 
 ////////////////////////////////////////////////////////////////////////////////
 
